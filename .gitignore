@@ -6,23 +6,3 @@ uni_modules/*
 .history
 
 dist
-
-# bak file
-_api.js
-_discover
-
-.project
-*.sublime-workspace
-*.sublime-project
-.vscode
-.idea
-
-src/project.config.json
-
-.wepycache
-project.config.json
-project.private.config.json
-
-# editor
-.vscode
-.env.*.local
