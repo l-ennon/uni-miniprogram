@@ -6,13 +6,12 @@
 		<view class="banner">
 			<image src="../../static/banner.png" mode=""></image>
 		</view>
-		<view class="toLogin" @click="toLogin()">
+		<view class="mine" @click="toLogin()">
 			<view class="title">我的工作</view>
-			<view class="flex flex--direction">
-				<view class="aa" v-for="(item, index) in workList">
-					<view class="aaa">
-						{{ item.name }}
-					</view>
+			<view class="work">
+				<view class="box" v-for="(item, index) in workList">
+					<image :src="item.icon" mode=""></image>
+					<view>{{ item.name }}</view>
 				</view>
 			</view>
 		</view>
@@ -27,15 +26,15 @@
 				workList: [
 					{
 						name: '入库核验',
-						icon: '../../static/logo.png'
+						icon: '../../static/image/warehousing.png'
 					},
 					{
 						name: '盘库',
-						icon: '../../static/logo.png'
+						icon: '../../static/image/dish.png'
 					},
 					{
 						name: '入库核验',
-						icon: '../../static/logo.png'
+						icon: '../../static/templateHL.png'
 					}
 				]
 			}
@@ -58,6 +57,35 @@
 			display: block;
 			width: 100vw;
 			height: 300rpx;
+		}
+	}
+	.mine {
+		margin-top: 20rpx;
+		.title {
+			margin-left: 24rpx;
+			font-size: 24rpx;
+			color: #666666;
+		}
+	}
+	.work {
+		display: flex;
+		flex-flow: row nowrap;
+		font-size: 28rpx;
+		color: #333333;
+	}
+	.box {
+		margin-top: 20rpx;
+		height: 100rpx;
+		flex: 1;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: center;
+		image {
+			display: block;
+			margin-bottom: 20rpx;
+			width: 40rpx;
+			height: 40rpx;
 		}
 	}
 </style>
