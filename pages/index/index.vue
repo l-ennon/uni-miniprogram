@@ -9,7 +9,7 @@
 		<view class="mine" @click="toLogin()">
 			<view class="title">我的工作</view>
 			<view class="work">
-				<view class="box" v-for="(item, index) in workList">
+				<view class="box" v-for="(item, index) in workList" @click="gotoList">
 					<image :src="item.icon" mode=""></image>
 					<view>{{ item.name }}</view>
 				</view>
@@ -43,6 +43,11 @@
 			toLogin () {
 				uni.navigateTo({
 				    url: '../login/index'
+				});
+			},
+			gotoList () {
+				uni.navigateTo({
+				    url: '../warehousing/list'
 				});
 			}
 		}
