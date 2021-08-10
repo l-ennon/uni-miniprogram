@@ -1,0 +1,112 @@
+.bba-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+.bba-column {
+  display: flex;
+  flex-flow: column nowrap;
+}
+.bba-row {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.bba-main-center {
+  justify-content: center; // 主轴
+  align-items: center; // 交叉轴
+}
+.bba-main-start {
+  justify-content: flex-start;
+}
+.bba-main-end {
+  justify-content: flex-end;
+}
+.bba-main-between {
+  justify-content: space-between;
+}
+.bba-main-justify {
+  justify-content: space-around;
+}
+.bba-main-full {
+  align-items: stretch;
+}
+.bba-align-center {
+  align-items: center;
+}
+.bba-absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+h1{
+  font-size: 18px;
+}
+h2{
+  font-size: 14px;
+}
+textarea:disabled {
+  background-color : #fff; // 修改默认灰色样式
+  color: #666; 
+  opacity:1; // 默认的不透明级别为0.3
+  -webkit-text-fill-color:#666; // 字体颜色安卓与IOS适配  
+  -webkit-opacity: 1;
+}
+textarea {
+  background: #fff;
+  color: #666 !important;
+}
+.bba-t-center {
+  text-align: center;
+}
+.bba-t-green {
+  color: #41be54;
+}
+.bba-t-white {
+  color: #fff!important;
+}
+.bba-t-orange {
+  color: #fe7a34
+}
+.bba-t-yellow {
+  color: #eed817;
+}
+.bba-t-red {
+  color: #DF2D2D !important;
+}
+.bba-t-blue {
+  color: $uni-color-primary !important;
+}
+.bba-t-gray {
+  color: #999999 !important;
+}
+.bba-t-dgray {
+  color: #666 !important;
+}
+.bba-t-grey {
+  color: #757575;
+}
+.bba-t-black {
+  color: #000 !important;;
+}
+.bba-bg-white {
+  background: #fff!important;
+}
+.bba-bg-yellow {
+  background: #ffcc00;
+}
+.bba-bg-dgray {
+  background: #757575;
+}
+.bba-bg-blue {
+  background-color: $uni-color-primary !important;
+}
+.bba-bg-red {
+  background: #f5544a;
+}
+.bba-bg-gray {
+  background: #f2f2f2 !important;
+}

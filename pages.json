@@ -1,20 +1,30 @@
 {
-	"pages": [{
+	"pages": [
+    {
 		"path": "pages/index/index",
 		"style": {
-			"navigationBarTitleText": "uni-app"
+			"navigationBarTitleText": "农投小贷"
 		}
-	}, {
-		"path": "pages/login/index",
-		"style": {
-			"navigationBarTitleText": "login"
-		}
-	}, {
-		"path": "pages/warehousing/list",
-		"style": {
-			"navigationBarTitleText": "入库核验"
-		}
-	}],
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/warehousing/list",
+      "style": {
+        "navigationBarTitleText": "入库核验"
+      }
+    },
+    {
+      "path": "pages/warehousing/detail",
+      "style": {
+        "navigationBarTitleText": "详细信息"
+      }
+    }
+  ],
 	"tabBar": {
 	    "color": "#7A7E83",
 	    "selectedColor": "#3cc51f",
@@ -25,7 +35,8 @@
 	        "iconPath": "static/image/home-un.png",
 	        "selectedIconPath": "static/image/home.png",
 	        "text": "首页"
-	    }, {
+	    },
+      {
 	        "pagePath": "pages/login/index",
 	        "iconPath": "static/image/mine-un.png",
 	        "selectedIconPath": "static/image/mine.png",
@@ -35,7 +46,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarBackgroundColor": "#fff",
 		"backgroundColor": "#F8F8F8",
 		"app-plus": {
 			"background": "#efeff4"
