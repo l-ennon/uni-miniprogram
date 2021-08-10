@@ -27,14 +27,29 @@
       </view>
     </view>
     <view class="content">
+      <!-- 汽车质押信息 -->
       <view class="data-list" v-if="activeIndex === 0">
+        <view class="upload-wrap" @click="takePhoto">
+          <view class="upload-content bba-row">
+            <view class="icon iconfont"> + </view>
+            <view>
+              <view class="photo">拍摄车架号照片</view>
+              <view class="tip">请拍摄前车窗VIN码, 拍摄前请打开手机定位</view>
+            </view>
+          </view>
+        </view>
         <pledge-info-item
           v-for="(item, index) in pledgeInfoList"
           :item="item"
           @toggleSingle="toggleSingle"></pledge-info-item>
       </view>
+      <!-- 车架号照片 -->
       <view class="img-list" v-if="activeIndex === 1">
         <image-item></image-item>
+      </view>
+      <!-- 提交信息 -->
+      <view class="audit-list" v-if="activeIndex === 2">
+        <audit-item></audit-item>
       </view>
     </view>
     <view class="footer" v-if="activeIndex === 0">
@@ -51,8 +66,9 @@
 <script>
   import pledgeInfoItem from './components/pledge-info-item.vue'
   import imageItem from './components/image-item.vue'
+  import auditItem from './components/audit-item.vue'
   export default {
-    components: { pledgeInfoItem, imageItem },
+    components: { pledgeInfoItem, imageItem, auditItem },
     data() {
       return {
         headerBarList: [
@@ -113,6 +129,21 @@
       selectBar(item, index) {
         let activeIndex = this.activeIndex === index
         this.activeIndex = activeIndex ? null : index
+      },
+      // 拍照
+      takePhoto() {
+      	uni.chooseImage({
+      		sourceType: ['camera'],
+      		success: (res) => {
+            uni.getLocation({
+                type: 'wgs84',
+                success: function (res) {
+                    console.log('当前位置的经度：' + res.longitude);
+                    console.log('当前位置的纬度：' + res.latitude);
+                }
+            });
+      		}
+      	})
       },
       // 单选
       toggleSingle(selected) {
@@ -193,6 +224,33 @@
           border-radius: 20rpx;
           font-size: 28rpx;
         }
+      }
+    }
+    
+  }
+  .upload-wrap {
+    padding: 20rpx 0;
+    background-color: rgb(235, 244, 255);
+    .upload-content {
+      align-items: center;
+      width: 80%;
+      margin: 10rpx auto;
+      background-color: #fff;
+      border-radius: 30rpx;
+      padding-top: 10rpx;
+      padding-bottom: 10rpx;
+      .iconfont {
+        width: 100rpx;
+        font-size: 80rpx;
+        text-align: right;
+        margin-right: 10rpx;
+      }
+      .photo {
+        font-size: 32rpx;
+      }
+      .tip {
+        font-size: 24rpx;
+        color: #999;
       }
     }
   }
