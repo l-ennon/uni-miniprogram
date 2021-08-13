@@ -13,22 +13,23 @@
       <view class="bar-wrap bba-row">
         <view
           class="header-bar"
-          :class="{'active-header-bar': activeIndex === index}"
+          :class="{'active-header-bar': activeIndex === item.value}"
           @click="selectBar(item, index)"
           v-for="(item, index) in headerBarList"
           :key="index">{{item.label}}</view>
       </view>
-      <view class="company-warp">
+     <!-- <view class="company-warp">
         <view class="company">北京世纪中讯科技有限公司</view>
         <view class="main-code-wrap bba-row">
-          <view class="main-code-mark">合同编号：TSJ-12455-ONJ</view>
+          <view class="main-code-mark">合同编号：{{mainCodeMark}}</view>
           <view class="record-btn">查看审批记录</view>
         </view>
-      </view>
+      </view> -->
     </view>
     <view class="content">
       <!-- 汽车质押信息 -->
-      <view class="data-list" v-if="activeIndex === 0">
+      <view class="pledeg-list" v-if="activeIndex === 1">
+        <!-- v-if="flowFlag === '1' && paramExp !== '3'" -->
         <view class="upload-wrap" @click="takePhoto">
           <view class="upload-content bba-row">
             <view class="icon iconfont"> + </view>
@@ -40,16 +41,22 @@
         </view>
         <pledge-info-item
           v-for="(item, index) in pledgeInfoList"
+          :key="index"
           :item="item"
           @toggleSingle="toggleSingle"></pledge-info-item>
       </view>
       <!-- 车架号照片 -->
-      <view class="img-list" v-if="activeIndex === 1">
-        <image-item></image-item>
+      <view class="img-list" v-if="activeIndex === 2">
+        <image-item 
+          v-for="(item, index) in autoGuaranteeList"
+          :key="index"
+          :item="item"
+          @confirmDelete="confirmDelete">
+         </image-item>
       </view>
       <!-- 提交信息 -->
-      <view class="audit-list" v-if="activeIndex === 2">
-        <audit-item></audit-item>
+      <view class="audit-list" v-if="activeIndex === 3">
+        <audit-item ></audit-item>
       </view>
     </view>
     <view class="footer" v-if="activeIndex === 0">
@@ -88,62 +95,138 @@
             value: 3
           }
         ],
-        activeIndex: 0,
-        pledgeInfoList: [{
-          brand: '路虎',
-          carSystem: '路虎揽胜',
-          model: '2017款 路虎揽胜 3.0T 汽油 HSE',
-          frameNumber: 'SAGDH12FGKUI8989',
-          certificateNumber: '123686638999278221',
-          storagePosition: '天津宝畅国际库'
-        },
-        {
-          brand: '路虎',
-          carSystem: '路虎揽胜',
-          model: '2017款 路虎揽胜 3.0T 汽油 HSE',
-          frameNumber: 'SAGDH12FGKUI8989',
-          certificateNumber: '123686638999278221',
-          storagePosition: '天津宝畅国际库'
-        },
-        {
-          brand: '路虎',
-          carSystem: '路虎揽胜',
-          model: '2017款 路虎揽胜 3.0T 汽油 HSE',
-          frameNumber: 'SAGDH12FGKUI8989',
-          certificateNumber: '123686638999278221',
-          storagePosition: '天津宝畅国际库'
-        },
-        {
-          brand: '路虎',
-          carSystem: '路虎揽胜',
-          model: '2017款 路虎揽胜 3.0T 汽油 HSE',
-          frameNumber: 'SAGDH12FGKUI8989',
-          certificateNumber: '123686638999278221',
-          storagePosition: '天津宝畅国际库'
-        }],
-        selectAll: false
+        activeIndex: 1,
+        pledgeInfoList: [
+          {
+            brand: '路虎',
+            carSystem: '路虎揽胜',
+            model: '2017款 路虎揽胜 3.0T 汽油 HSE',
+            frameNumber: 'SAGDH12FGKUI8989',
+            certificateNumber: '123686638999278221',
+            storagePosition: '天津宝畅国际库'
+          },
+          {
+            brand: '路虎',
+            carSystem: '路虎揽胜',
+            model: '2017款 路虎揽胜 3.0T 汽油 HSE',
+            frameNumber: 'SAGDH12FGKUI8989',
+            certificateNumber: '123686638999278221',
+            storagePosition: '天津宝畅国际库'
+          },
+          {
+            brand: '路虎',
+            carSystem: '路虎揽胜',
+            model: '2017款 路虎揽胜 3.0T 汽油 HSE',
+            frameNumber: 'SAGDH12FGKUI8989',
+            certificateNumber: '123686638999278221',
+            storagePosition: '天津宝畅国际库'
+          },
+          {
+            brand: '路虎',
+            carSystem: '路虎揽胜',
+            model: '2017款 路虎揽胜 3.0T 汽油 HSE',
+            frameNumber: 'SAGDH12FGKUI8989',
+            certificateNumber: '123686638999278221',
+            storagePosition: '天津宝畅国际库'
+          },
+        ],
+        autoGuaranteeList: [{}],
+        selectAll: false,
+        insId: '',
+        flowListId: '',
+        paramExp: '',
+        flowFlag: '',
+        mainCodeMark: ''
       }
     },
+    onLoad (option) {
+      this.insId = option.insId
+      this.flowListId = option.flowListId
+      this.paramExp = option.paramExp
+      this.flowFlag = option.flowFlag
+    },
     methods: {
+      // 获取质押详情
+      getPledgeInfo(type) {
+        this.$http.post('/app/guarantee/check/auditDetail', {
+          insId: this.insId,
+          type
+        }).then(res => {
+          if (res.data.code === '200') {
+            let data = res.data
+            this.pledgeInfoList = data.guaranteeCheckList // 汽车质押信息
+            this.mainCodeMark = data.mainCodeMark
+          }
+        })
+      },
+      // 获取车架号照片
+      getImgInfo(type) {
+        this.$http.post('/app/guarantee/check/auditDetail', {
+          insId: this.insId,
+          type
+        }).then(res => {
+          if (res.data.code === '200') {
+            let data = res.data
+            this.autoGuaranteeList = data.autoGuaranteeList // 车架号照片
+          }
+        })
+      },
+      // 获取提交页面信息
+      getAuditInfo(type) {
+        this.$http.post('/app/guarantee/check/auditDetail', {
+          insId: this.insId,
+          type
+        }).then(res => {
+          if (res.data.code === '200') {
+            let data = res.data
+            this.pledgeInfoList = data.guaranteeCheckList // 汽车质押信息
+            this.mainCodeMark = data.mainCodeMark
+          }
+        })
+      },
       // 切换标题
       selectBar(item, index) {
-        let activeIndex = this.activeIndex === index
-        this.activeIndex = activeIndex ? null : index
+        let activeIndex = this.activeIndex === item.value
+        this.activeIndex = activeIndex ? null : item.value
+        // switch (this.activeIndex){
+        //   case 1:
+        //     this.getPledgeInfo(1)
+        //     break;
+        //   case 2:
+        //     this.getImgInfo(2)
+        //     break;
+        //   case 3:
+        //     this.getAuditInfo(3)
+        //     break;
+        // }
       },
       // 拍照
       takePhoto() {
       	uni.chooseImage({
       		sourceType: ['camera'],
       		success: (res) => {
-            uni.getLocation({
-                type: 'wgs84',
-                success: function (res) {
-                    console.log('当前位置的经度：' + res.longitude);
-                    console.log('当前位置的纬度：' + res.latitude);
-                }
-            });
+            console.log(res)
+            // uni.getLocation({
+            //     type: 'wgs84',
+            //     success: function (res) {
+            //         console.log('当前位置的经度：' + res.longitude);
+            //         console.log('当前位置的纬度：' + res.latitude);
+            //     }
+            // });
       		}
       	})
+      },
+      // 删除照片
+      confirmDelete (item) {
+        this.$http.post('/uniapp/guarantee/check/deletePic', {
+          id: item.id
+        }).then(res => {
+          if (res.data.code === '200') {
+            let data = res.data
+            uni.showToast({title: res.data.message})
+            this.getImgInfo(2) // 刷新图片列表
+          }
+        })
       },
       // 单选
       toggleSingle(selected) {
@@ -170,7 +253,7 @@
             this.$set(element, 'selected', false)
           })
         }
-      },
+      }
     }
   }
 </script>
@@ -206,7 +289,7 @@
       color: #fff;
     }
     .company-warp {
-      margin: 20rpx 0;
+      margin: 20rpx 0 0;
       padding: 20rpx;
       background-color: #fff;
       border-radius: 10rpx;
@@ -226,33 +309,41 @@
         }
       }
     }
-    
   }
-  .upload-wrap {
-    padding: 20rpx 0;
-    background-color: rgb(235, 244, 255);
-    .upload-content {
-      align-items: center;
-      width: 80%;
-      margin: 10rpx auto;
-      background-color: #fff;
-      border-radius: 30rpx;
-      padding-top: 10rpx;
-      padding-bottom: 10rpx;
-      .iconfont {
-        width: 100rpx;
-        font-size: 80rpx;
-        text-align: right;
-        margin-right: 10rpx;
-      }
-      .photo {
-        font-size: 32rpx;
-      }
-      .tip {
-        font-size: 24rpx;
-        color: #999;
+  .pledeg-list {
+    margin-top: 20rpx;
+    .upload-wrap {
+      padding: 20rpx 0;
+      background-color: rgb(235, 244, 255);
+      .upload-content {
+        align-items: center;
+        width: 80%;
+        margin: 10rpx auto;
+        background-color: #fff;
+        border-radius: 30rpx;
+        padding-top: 10rpx;
+        padding-bottom: 10rpx;
+        .iconfont {
+          width: 100rpx;
+          font-size: 80rpx;
+          text-align: right;
+          margin-right: 10rpx;
+        }
+        .photo {
+          font-size: 32rpx;
+        }
+        .tip {
+          font-size: 24rpx;
+          color: #999;
+        }
       }
     }
+  }
+  .img-list {
+    margin-top: 20rpx;
+  }
+  .audit-list {
+    margin-top: 20rpx;
   }
   .footer {
     flex-grow: 0;

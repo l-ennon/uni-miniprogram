@@ -1,22 +1,22 @@
 <template>
-  <view class="list-item-wrap bba-bg-white" @click="toDetail()">
+  <view class="list-item-wrap bba-bg-white" @click="toDetail(item)">
     <view class="list-item list-item-top">
-      <view class="company">天津港国际贸易有限公司《申请借款》合同编号：CYD-2021-1682-1J</view>
+      <view class="company">{{item.busDesc}}</view>
       <view class="flow-info">
-        <view class="flow-name">车辆借款申请</view>
-        <view class="flow-status" v-if="true">待审核</view>
+        <view class="flow-name">{{item.objName}}</view>
+        <!-- <view class="flow-status" v-if="true">待审核</view> -->
       </view>		
     </view>
     <view class="list-item">
-      <view>发起人：马上好车复核岗</view>
+      <view>发起人：{{item.propUserName}}</view>
       <view>
-        <view>审核人：仓库业务</view>
+        <view>审核人：{{item.approUserName}}</view>
       </view>		
     </view>
     <view class="list-item">
-      <view>当前环节：仓库|监管公司入库核验</view>
+      <view>当前环节：{{item.flowNodeName}}</view>
       <view>
-        <view>2020-05-07 18:00:00</view>
+        <view>{{item.propTime}}</view>
       </view>		
     </view>
   </view>
@@ -35,8 +35,8 @@
 			},
 		},
 		methods: {
-			toDetail() {
-				this.$emit("toDetail");
+			toDetail(item) {
+				this.$emit("toDetail", item)
 			}
 		}
 	}

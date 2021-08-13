@@ -8,14 +8,14 @@
       <view class="title">{{item.brand}}-{{item.carSystem}} {{item.model}}</view>
       <view class="item">
         <view class="num">车架号：{{item.frameNumber}} | </view>
-        <view>排量1.4</view>
+        <view>排量： {{item.displacement}}</view>
       </view>
       <view class="item">
         <view>合格证号/关单号：{{item.certificateNumber}}</view>
       </view>
       <view class="item">
         <view class="storgge">{{item.storagePosition}}</view>
-        <view class="status">已标记</view>
+        <view class="status">{{item.ocrResult === 1 ? '已识别' : '未识别'}}</view>
       </view>
     </view>
 	</view>

@@ -12,15 +12,19 @@
       <view class="info-title">
         <bba-title title="其他附件"></bba-title>
       </view>
-      <uni-file-picker 
+      <upload-img
+        action="/uniapp/busniess/review/importAttachment"
+        :imgList="otherFiles">
+      </upload-img>
+      <!-- <uni-file-picker 
         v-model="imageValue" 
         fileMediatype="image" 
         mode="grid" 
         @select="select" 
         @progress="progress" 
         @success="success" 
-        @fail="fail" 
-      />
+        @delete="deleteImg"
+      /> -->
     </view>
   </view>
 </template>
@@ -29,28 +33,11 @@
 export default {
   data () {
     return {
-      imageValue: []
+      imageValue: [require('../../../static/image/person.jpg')],
+      otherFiles: []
     }
   },
   methods: {
-    // 获取上传状态
-    select(e){
-        console.log('选择文件：',e)
-    },
-    // 获取上传进度
-    progress(e){
-        console.log('上传进度：',e)
-    },
-
-    // 上传成功
-    success(e){
-        console.log('上传成功')
-    },
-
-    // 上传失败
-    fail(e){
-        console.log('上传失败：',e)
-    }
   }
 }
 </script>
@@ -70,7 +57,12 @@ export default {
       border: 1px solid #ececec;
       border-radius: 10rpx;
       padding: 20rpx;
+      padding-right: 0;
       min-height: 100rpx;
+      // width: 90%;
+      uni-textarea {
+        width: 750rpx;
+      }
     }
   }
 </style>

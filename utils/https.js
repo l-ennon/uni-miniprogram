@@ -1,49 +1,53 @@
-module.exports = (param) => {
-	var url = param.url;
-	var method = param.method;
-	var header = param.header || {};
-	var data = param.data || {};
-	
-	// 请求方式: GET POST 
-	if(method){
-		method = method.toUpperCase(); // 小写转成大写
-		if(method == "POST"){
-			header = {"content-type":"application/x-www-form-urlencoded"}
-		}
-	}
-	
-	// 发起请求 加载动画
-	if(!param.hideLoading){
-		uni.showLoading({title:"加载中..."})
-	}
-	
-	// 发起网络请求
-	uni.request({
-		url: url,
-		method:method || "GET",
-		header:header,
-		data: data,
-		success: res => {
-			if(res.statusCode && res.statusCode != 200){ // api错误
-				uni.showModal({
-					content:res.msg
-				})
-				return;
-			}
-			
-			typeof param.success == "function" && param.success(res.data);
-		},
-		fail: (e) => {
-			uni.showModal({
-				content: e.meg
-			})
-			typeof param.fail == "function" && param.fail(e.data);
-		},
-		complete: () => {
-			// console.log("网络请求complete");
-			uni.hideLoading();
-			typeof param.complete == "function" && param.complete(e.data);
-			return;
-		}
-	})
+import BASE_URL from './baseURL.js'
+ const request = (options = {}) => {
+ // 在这里可以对请求头进行一些设置
+ // 例如：
+  // options.header = {
+  //   "Content-Type": "application/x-www-form-urlencoded"
+  // }
+  
+  // options.header = {
+  //   'content-type': 'application/x-www-form-urlencoded',
+  //   'cookie': uni.getStorageSync("Cookie")// 读取cookie
+  // }
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: BASE_URL + options.url || '',
+			method: options.type || 'GET',
+			data: options.data || {},
+			header: {
+        'cookie': uni.getStorageSync("Cookie"), // 读取cookie
+        ...options.header
+       } || {
+        'content-type': 'application/x-www-form-urlencoded',
+        'cookie': uni.getStorageSync("Cookie")// 读取cookie
+      }
+		}).then(data => {
+			let [err, res] = data;        
+			resolve(res.data);
+		}).catch(error => {
+			reject(error)
+		})
+	});
+}
+
+ const get = (url, data, options = {}) => {
+	options.type = 'GET';
+	options.data = data;
+	options.url = url;
+	return request(options)
+}
+
+const post = (url, data, options = {}) => {
+	options.type = 'POST';
+	options.data = data;
+	options.url = url;
+	return request(options)
+}
+
+
+export default {
+	request,
+	get,
+	post
 }
